@@ -1,3 +1,8 @@
+from .Generator.MapGenerator import MapGenerator
+
 class App:
-    def run(self):
+    def __init__(self) -> None:
+        self.map = MapGenerator().generate()
+
+    def run(self) -> None:
         pass
