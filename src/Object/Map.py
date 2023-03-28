@@ -2,6 +2,7 @@ from .Point import Point
 from .Store import Store
 from .Vechicle import Vechicle
 
+
 class Map:
     MIN_X = 0
     MIN_Y = 0
@@ -12,8 +13,9 @@ class Map:
         self.points = []
 
     def addPoint(self, point: Point):
-        if point.getX() not in range(self.MIN_X, self.MAX_X) or point.getY() not in range(self.MIN_Y, self.MAX_Y):
-            raise Exception("Store out of map range")
+        if point.getX() not in range(self.MIN_X, self.MAX_X + 1) or point.getY() not in range(self.MIN_Y, self.MAX_Y + 1):
+            raise Exception("Store out of map range: (" +
+                            str(point.getX()) + "; " + str(point.getY()) + ")")
 
         self.points.append(point)
 
@@ -37,3 +39,6 @@ class Map:
                 result.append(point)
 
         return result
+
+    def getPointsFor(self, x: int, y: int):
+        return filter(lambda point: point.getX() == x and point.getY() == y, self.points)
