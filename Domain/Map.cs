@@ -8,6 +8,7 @@ class Map
 
     public static Map Generate(int seed)
     {
+        Console.WriteLine($"Generating map with seed {seed}...");
         var map = new Map();
         var random = new Random(seed);
         for (var i = 0; i < 5; i++)
@@ -18,6 +19,10 @@ class Map
                 X = warehouseX,
                 Y = warehouseY,
                 Name = $"Warehouse #{i + 1}"
+            });
+            map.Warehouses.ForEach(warehouse =>
+            {
+                Console.WriteLine($"{warehouse.Name}: ({warehouse.X}, {warehouse.Y})");
             });
         }
         var numberOfStores = random.Next(5, 21);
@@ -32,6 +37,10 @@ class Map
                 Y = storeY,
                 ProductNeeds = new() { { ProductType.GenericProduct, need } },
                 Name = $"Store #{i + 1}"
+            });
+            map.Stores.ForEach(store =>
+            {
+                Console.WriteLine($"{store.Name}: ({store.X}, {store.Y})");
             });
         }
         var numberOfCars = random.Next(3, 7);
