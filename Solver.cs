@@ -68,7 +68,7 @@ static class Solver
     {
         // Satisfaction score: percentage of store's need satisfied by the car's cargo divided by the distance between them.
         var maxPossibleDistance = Math.Sqrt(Math.Pow(Map.MAX_MAP_X, 2) + Math.Pow(Map.MAX_MAP_Y, 2));
-        var distanceScore = (store.Distance(car) / maxPossibleDistance) * 2; // a perfectly satisfying car on the other end of the map should have a satisfaction score of 0.5
+        var distanceScore = 1 + (store.Distance(car) / maxPossibleDistance); // a perfectly satisfying car on the other end of the map should have a satisfaction score of 0.5
         var totalDemanded = store.TotalNeed;
         var totalCarried = 0;
         foreach (var (productType, amount) in car.Cargo)
