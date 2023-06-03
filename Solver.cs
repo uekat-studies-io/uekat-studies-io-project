@@ -43,28 +43,19 @@ static class Solver
                     var warehouse = map.Warehouses.OrderBy(warehouse => warehouse.Distance(store)).First();
                     car = map.Cars.OrderBy(car => car.Distance(warehouse)).First();
                     totalDistance += car.MoveTo(warehouse);
-                    // fill up greedily
-                    foreach (var (productType, need) in store.ProductNeeds.OrderByDescending(pair => pair.Value))
-                    {
-                        car.Cargo[productType] += Math.Min(car.CapacityLeft, need);
-                    }
+                    car.Load(store.ProductNeeds, warehouse);
                 }
                 // Send the car to the store.
                 totalDistance += car.MoveTo(store);
                 // Unload.
-                foreach (var (productType, amount) in car.Cargo)
-                {
-                    var amountNeeded = store.ProductNeeds[productType];
-                    store.ProductNeeds[productType] -= Math.Min(amount, amountNeeded);
-                    car.Cargo[productType] -= Math.Min(amount, amountNeeded);
-                }
+                car.Serve(store);
 
                 break; // we want to recalculate after every delivery run
             }
         }
         return totalDistance;
     }
-    public static Car? MostSatisfyingCar(Map map, Store store, double satisfactionThreshold = 0.9)
+    public static Car? MostSatisfyingCar(Map map, Store store, double satisfactionThreshold = 0.5)
     {
         var carsBySatisfaction = map.Cars.Select(car => new
         {
