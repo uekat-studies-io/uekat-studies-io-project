@@ -23,7 +23,7 @@ class Map
             {
                 X = storeX,
                 Y = storeY,
-                Need = new() { { ProductType.GenericProduct, need } }
+                ProductNeeds = new() { { ProductType.GenericProduct, need } }
             });
         }
         var numberOfCars = random.Next(3, 7);

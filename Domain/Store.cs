@@ -1,4 +1,4 @@
 class Store : Point
 {
-    public Dictionary<ProductType, int> Need { get; set; } = new();
+    public Dictionary<ProductType, int> ProductNeeds { get; set; } = new();
 }
