@@ -27,6 +27,7 @@ class Map
             var need = random.Next(100, 201);
             map.Stores.Add(new Store
             {
+                IsUnloading = (random.Next() % 2 == 0),
                 X = storeX,
                 Y = storeY,
                 ProductNeeds = new() { { ProductType.GenericProduct, need } },

@@ -8,7 +8,7 @@ static class Solver
         var totalNeeds = new Dictionary<ProductType, int>() {
             {ProductType.GenericProduct, 0}
         };
-        foreach (var pair in map.Stores.SelectMany(store => store.ProductNeeds))
+        foreach (var pair in map.Stores.Where(store => !store.IsUnloading).SelectMany(store => store.ProductNeeds))
         {
             totalNeeds[pair.Key] += pair.Value;
         }
@@ -24,7 +24,10 @@ static class Solver
                 car.Cargo[pair.Key] += toFill;
                 totalGoodAmount -= toFill;
             }
+            Console.WriteLine($"Leftover good: {totalGoodAmount}");
         }
+        Console.WriteLine("Stores:");
+        map.Stores.ForEach(Console.WriteLine);
         Console.WriteLine("Cars after filling up:");
         map.Cars.ForEach(Console.WriteLine);
         Console.WriteLine("Begin delivery run");
@@ -43,15 +46,23 @@ static class Solver
                     var warehouse = map.Warehouses.OrderBy(warehouse => warehouse.Distance(store)).First();
                     car = map.Cars.OrderBy(car => car.Distance(warehouse)).First();
                     totalDistance += car.MoveTo(warehouse);
-                    car.Load(store.ProductNeeds, warehouse);
+                    if (!store.IsUnloading) car.Load(store.ProductNeeds, warehouse);
+                    if (store.IsUnloading && car.CapacityLeft < store.TotalNeed) car.DumpCargo(warehouse);
                 }
                 // Send the car to the store.
                 totalDistance += car.MoveTo(store);
-                // Unload.
-                car.Serve(store);
+                // Serve the store.
+                if (store.IsUnloading) car.ReceiveFrom(store);
+                else car.DeliverTo(store);
 
                 break; // we want to recalculate after every delivery run
             }
+        }
+        foreach (var car in map.Cars.Where(car => car.Total > 0))
+        {
+            var nearestWarehouse = map.Warehouses.OrderBy(warehouse => warehouse.Distance(car)).First();
+            totalDistance += car.MoveTo(nearestWarehouse);
+            car.DumpCargo(nearestWarehouse);
         }
         return totalDistance;
     }
@@ -70,12 +81,20 @@ static class Solver
         var maxPossibleDistance = Math.Sqrt(Math.Pow(Map.MAX_MAP_X, 2) + Math.Pow(Map.MAX_MAP_Y, 2));
         var distanceScore = 1 + (store.Distance(car) / maxPossibleDistance); // a perfectly satisfying car on the other end of the map should have a satisfaction score of 0.5
         var totalDemanded = store.TotalNeed;
-        var totalCarried = 0;
-        foreach (var (productType, amount) in car.Cargo)
+        double supplyScore;
+        if (!store.IsUnloading)
         {
-            if (store.ProductNeeds.ContainsKey(productType)) totalCarried += amount;
+            var totalCarried = 0;
+            foreach (var (productType, amount) in car.Cargo)
+            {
+                if (store.ProductNeeds.ContainsKey(productType)) totalCarried += amount;
+            }
+            supplyScore = (double)totalCarried / (double)totalDemanded; // 1.0 if a car has everything a store needs
         }
-        var supplyScore = (double)totalCarried / (double)totalDemanded; // 1.0 if a car has everything a store needs
+        else
+        {
+            supplyScore = (double)car.CapacityLeft / (double)totalDemanded;
+        }
         return supplyScore / distanceScore;
     }
 }

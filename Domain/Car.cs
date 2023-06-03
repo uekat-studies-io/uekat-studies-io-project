@@ -39,9 +39,17 @@ class Car : Point
         }
         Console.WriteLine($"Car status after loading: {this}");
     }
-    public void Serve(Store store)
+    public void DumpCargo(Warehouse dump)
     {
-        Console.WriteLine($"Store awaits delivery: {store}");
+        Console.WriteLine($"{Name} dumping cargo at {dump.Name}");
+        foreach (var (productType, load) in Cargo)
+        {
+            if (load > 0) Console.WriteLine($"{Name} dumps {load} kg of {productType}");
+            Cargo[productType] = 0;
+        }
+    }
+    public void DeliverTo(Store store)
+    {
         foreach (var (productType, amount) in Cargo)
         {
             var amountNeeded = store.ProductNeeds[productType];
@@ -51,6 +59,18 @@ class Car : Point
         }
         Console.WriteLine($"Store status after delivery: {store}");
         Console.WriteLine($"Car status: {this}");
+    }
+    public void ReceiveFrom(Store store)
+    {
+        foreach (var (productType, amount) in store.ProductNeeds.OrderByDescending(pair => pair.Value))
+        {
+            var amountNeeded = store.ProductNeeds[productType];
+            store.ProductNeeds[productType] -= Math.Min(amountNeeded, CapacityLeft);
+            Cargo[productType] += Math.Min(amountNeeded, CapacityLeft);
+            Console.WriteLine($"{Name} receiving {Math.Min(amountNeeded, CapacityLeft)} kg of {productType} from {store.Name}");
+            Console.WriteLine($"Store status after receipt: {store}");
+            Console.WriteLine($"Car status: {this}");
+        }
     }
 }
 enum CarClass
