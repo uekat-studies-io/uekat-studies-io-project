@@ -11,5 +11,6 @@ if (!seedOk)
     return;
 }
 var map = Map.Generate(seed);
+new Visualiser(map).Visualize();
 var solution = Solver.Solve(map);
 Console.WriteLine($"TOTAL SOLUTION: {solution} kilometers");
