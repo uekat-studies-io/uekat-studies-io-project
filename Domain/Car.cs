@@ -19,4 +19,11 @@ class Car : Point
         output.Append("}");
         return output.ToString();
     }
+    public double MoveTo(Point other)
+    {
+        var moved = Distance(other);
+        X = other.X;
+        Y = other.Y;
+        return moved;
+    }
 }
