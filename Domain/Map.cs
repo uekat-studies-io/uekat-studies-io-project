@@ -20,11 +20,11 @@ class Map
                 Y = warehouseY,
                 Name = $"Warehouse #{i + 1}"
             });
-            map.Warehouses.ForEach(warehouse =>
+        }
+        map.Warehouses.ForEach(warehouse =>
             {
                 Console.WriteLine($"{warehouse.Name}: ({warehouse.X}, {warehouse.Y})");
             });
-        }
         var numberOfStores = random.Next(5, 21);
         for (var i = 0; i < numberOfStores; i++)
         {
@@ -38,11 +38,12 @@ class Map
                 ProductNeeds = new() { { ProductType.GenericProduct, need } },
                 Name = $"Store #{i + 1}"
             });
-            map.Stores.ForEach(store =>
+
+        }
+        map.Stores.ForEach(store =>
             {
                 Console.WriteLine($"{store.Name}: ({store.X}, {store.Y})");
             });
-        }
         var numberOfCars = random.Next(3, 7);
         for (var i = 0; i < numberOfCars; i++)
         {
