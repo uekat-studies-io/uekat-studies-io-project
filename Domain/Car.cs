@@ -11,12 +11,13 @@ class Car : Point
 
     public override string ToString()
     {
-        var output = new StringBuilder("Car carrying {");
+        var output = new StringBuilder($"{Name} carrying {{");
         foreach (var pair in Cargo)
         {
             output.Append($" {pair.Key} = {pair.Value} ");
         }
-        output.Append("}");
+        output.Append("}, ");
+        output.Append($"capacity: {Total} / {Capacity} kg");
         return output.ToString();
     }
     public double MoveTo(Point other)
