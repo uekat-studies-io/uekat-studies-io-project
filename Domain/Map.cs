@@ -6,10 +6,10 @@ class Map
     public List<Car> Cars = new();
     public List<Store> Stores = new();
 
-    public static Map Generate()
+    public static Map Generate(int seed)
     {
         var map = new Map();
-        var random = new Random();
+        var random = new Random(seed);
         for (var i = 0; i < 5; i++)
         {
             var (warehouseX, warehouseY) = ((double)random.Next(0, MAX_MAP_X + 1), (double)random.Next(0, MAX_MAP_Y + 1));
