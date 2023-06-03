@@ -24,7 +24,7 @@ class Map
         for (var i = 0; i < numberOfStores; i++)
         {
             var (storeX, storeY) = ((double)random.Next(0, MAX_MAP_X + 1), (double)random.Next(0, MAX_MAP_Y + 1));
-            var need = random.Next(100, 601);
+            var need = random.Next(100, 201);
             map.Stores.Add(new Store
             {
                 X = storeX,
