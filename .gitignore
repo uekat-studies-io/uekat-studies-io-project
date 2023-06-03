@@ -540,3 +540,8 @@ obj/
 bin/
 
 .vscode/
+
+log.txt
+output/
+
+output.png
