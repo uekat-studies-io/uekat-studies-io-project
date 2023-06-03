@@ -27,6 +27,7 @@ static class Solver
         }
         Console.WriteLine("Cars after filling up:");
         map.Cars.ForEach(Console.WriteLine);
+        Console.WriteLine("Begin delivery run");
         while (!WinCondition(map))
         {
             // For every unsatisfied store, starting with those with the biggest needs:
@@ -63,7 +64,7 @@ static class Solver
         }
         return totalDistance;
     }
-    public static Car? MostSatisfyingCar(Map map, Store store, double satisfactionThreshold = 0.5)
+    public static Car? MostSatisfyingCar(Map map, Store store, double satisfactionThreshold = 0.9)
     {
         var carsBySatisfaction = map.Cars.Select(car => new
         {

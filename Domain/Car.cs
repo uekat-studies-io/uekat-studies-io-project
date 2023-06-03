@@ -22,8 +22,15 @@ class Car : Point
     public double MoveTo(Point other)
     {
         var moved = Distance(other);
+        Console.WriteLine($"{Name} moving {moved:0.00}km to ${other.Name}");
         X = other.X;
         Y = other.Y;
         return moved;
     }
+}
+enum CarClass
+{
+    Green = 1000,
+    Blue = 1500,
+    Red = 2000
 }
