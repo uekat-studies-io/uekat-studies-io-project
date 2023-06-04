@@ -1,5 +1,12 @@
-# uekat-studies-io-project
-Uniwersytet Ekonimiczny in Katowice - project for the subject "Inteligencja obliczeniowa"
+# Store delivery optimization
+Final project for the "Computational Intelligence" course at the University of Economics in Katowice.
+
+## Project description
+This project aims to solve the problem of optimizing the delivery of goods to stores using a fleet of vehicles. The objective is to minimize the total distance traveled by the vehicles while satisfying the demand of each store. The project is suitable for scenarios where a company has to distribute products from warehouses to various retail stores, and it wants to optimize the delivery process to save costs and time.
+
+The algorithm implemented in this project is based on a greedy heuristic, which attempts to satisfy the demand of stores by assigning vehicles with the highest "satisfaction score" for each store. The satisfaction score takes into account both the extent to which the store's demand is met and the distance between the vehicle and the store. 
+
+The project takes input data such as the positions of vehicles, stores, and warehouses, as well as the demand of each store. It uses this data to determine which vehicles should be sent to which stores and what products should be delivered. Upon completion of the delivery process, the code calculates and returns the total distance traveled by the vehicles.
 
 ## Usage
 
